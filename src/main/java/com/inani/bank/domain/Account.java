@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import com.inani.bank.enums.AccountType;
 
@@ -22,8 +23,12 @@ import com.inani.bank.enums.AccountType;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//SEQUENCE, generator = "accountNumberSequence")
-    //@GenericGenerator(name = "accountNumberSequence", strategy = "com.inani.bank.sequence.AccountNumberSequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "accountNumberSequence")
+    @GenericGenerator(name = "accountNumberSequence", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+            @Parameter(name = "sequence_name", value = "accountNumberSequence"),
+            @Parameter(name = "initial_value", value = "10001"),
+            @Parameter(name = "increment_size", value = "1")
+    })
     @Column
     private Long accountNumber;
 
@@ -63,7 +68,7 @@ public class Account {
         // does nothing
     }
 
-    public Account(Long accountNumber){
+    public Account(Long accountNumber) {
         this.accountNumber = accountNumber;
     }
 
@@ -152,11 +157,13 @@ public class Account {
     }
 
     public void setAccountNumber(Long accountNumber) {
-        this.accountNumber = Long.valueOf(String.format("%05d",Long.toString(accountNumber)));
+        this.accountNumber = Long.valueOf(String.format("%05d", Long.toString(accountNumber)));
     }
 
-    /* public void setAccountNumber(String accountNumber) {
-        this.accountNumber = Long.valueOf(accountNumber);
-    } */
+    /*
+     * public void setAccountNumber(String accountNumber) {
+     * this.accountNumber = Long.valueOf(accountNumber);
+     * }
+     */
 
 }
