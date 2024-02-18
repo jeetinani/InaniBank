@@ -1,6 +1,7 @@
 package com.inani.bank.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.inani.bank.domain.Account;
+import com.inani.bank.dto.AccountDTO;
 import com.inani.bank.repository.AccountRepository;
 
 @RestController
@@ -27,14 +30,14 @@ public class AccountController {
     }
 
     @GetMapping("/accounts")
-    public List<Account> getAccounts() {
-        return accountRepository.findAll();
+    public List<AccountDTO> getAccounts() {
+        return accountRepository.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
     }
 
     @PostMapping("/accounts")
-    public Account saveAccounts(@RequestBody @Validated Account account) throws Exception {
-        if (nullCheck(account)) {
-            return accountRepository.save(account);
+    public Account saveAccounts(@RequestBody @Validated AccountDTO accountDTO) throws Exception {
+        if (nullCheck(accountDTO)) {
+            return accountRepository.save(accountDTO.toDomainObject());
         }
         throw new Exception("account number missing");
     }
@@ -45,8 +48,8 @@ public class AccountController {
         LOGGER.error("e.getMessag", e);
     }
 
-    private boolean nullCheck(Account account) {
-        return account.getAccountType() != null;
+    private boolean nullCheck(AccountDTO accountDTO) {
+        return accountDTO.getAccountType() != null;
     }
 
 }

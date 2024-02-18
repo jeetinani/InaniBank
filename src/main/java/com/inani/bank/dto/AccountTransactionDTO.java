@@ -32,7 +32,7 @@ public class AccountTransactionDTO implements Serializable {
         this.accountTransactionType = accountTransaction.getAccountTransactionType();
     }
 
-    public AccountTransaction getDomainObject() {
+    public AccountTransaction toDomainObject() {
         return new AccountTransaction(this.accountTransactionType, this.amount, this.description, this.transactionTime,
                 null);
     }

@@ -9,14 +9,14 @@ import com.inani.bank.repository.AccountRepository;
 
 @Service
 public class AccountService {
-    
+
     private AccountRepository accountRepository;
 
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
-    public Optional<Account>getAccount(Long accountNumber){
+    public Optional<Account> getAccount(Long accountNumber) {
         return this.accountRepository.findById(accountNumber);
     }
 }

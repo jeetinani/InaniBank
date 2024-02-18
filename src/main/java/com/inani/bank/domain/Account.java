@@ -68,6 +68,22 @@ public class Account {
         // does nothing
     }
 
+    public Account(Long accountNumber, String accountHolder, BigDecimal balance, Timestamp openingDate,
+            AccountType accountType, String email, String mobile, String address, String panCardNumber,
+            String aadharCardNumber, List<AccountTransaction> transactions) {
+        this.accountNumber = accountNumber;
+        this.accountHolder = accountHolder;
+        this.balance = balance;
+        this.openingDate = openingDate;
+        this.accountType = accountType;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+        this.panCardNumber = panCardNumber;
+        this.aadharCardNumber = aadharCardNumber;
+        this.transactions = transactions;
+    }
+
     public Account(Long accountNumber) {
         this.accountNumber = accountNumber;
     }
@@ -159,11 +175,4 @@ public class Account {
     public void setAccountNumber(Long accountNumber) {
         this.accountNumber = Long.valueOf(String.format("%05d", Long.toString(accountNumber)));
     }
-
-    /*
-     * public void setAccountNumber(String accountNumber) {
-     * this.accountNumber = Long.valueOf(accountNumber);
-     * }
-     */
-
 }

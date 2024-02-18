@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -44,8 +45,6 @@ public class AccountTransaction {
     public AccountTransaction() {
     }
 
-    
-
     public AccountTransaction(AccountTransactionType accountTransactionType, BigDecimal amount, String description,
             Timestamp transactionTime, Account account) {
         this.accountTransactionType = accountTransactionType;
@@ -54,8 +53,6 @@ public class AccountTransaction {
         this.transactionTime = transactionTime;
         this.account = account;
     }
-
-
 
     public Long getId() {
         return id;
