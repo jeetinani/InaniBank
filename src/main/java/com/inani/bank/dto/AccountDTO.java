@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import com.inani.bank.domain.Account;
 import com.inani.bank.enums.AccountType;
 
-public class AccountDTO implements Serializable{
+public class AccountDTO implements Serializable {
 
     private Long accountNumber;
     private String accountHolder;
