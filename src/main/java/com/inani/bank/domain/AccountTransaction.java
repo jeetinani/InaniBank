@@ -11,8 +11,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inani.bank.enums.AccountTransactionType;
@@ -22,7 +24,12 @@ import com.inani.bank.enums.AccountTransactionType;
 public class AccountTransaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transactionIdSequence")
+    @GenericGenerator(name = "transactionIdSequence", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+            @Parameter(name = "sequence_name", value = "transactionIdSequence"),
+            @Parameter(name = "initial_value", value = "101"),
+            @Parameter(name = "increment_size", value = "1")
+    })
     @Column
     private Long id;
 

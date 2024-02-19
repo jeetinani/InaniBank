@@ -44,9 +44,10 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/{accountNumber}")
-    public AccountDTO getMethodName(@PathVariable(value = "accountNumber", required = false) Long accountNumber,
+    public AccountDTO getMethodName(@PathVariable(value = "accountNumber", required = false) String accountId,
             @RequestHeader(name = "Authorization") String token) {
         System.out.println("token is " + token);
+        Long accountNumber = Long.valueOf(accountId.substring(3));
         if (accountRepository.existsById(accountNumber)) {
             return new AccountDTO(accountRepository.findById(accountNumber).get());
         }
@@ -54,9 +55,10 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/{accountNumber}/transactions")
-    public List<AccountTransactionDTO> getTransactions(@PathVariable(value = "accountNumber", required = false) Long accountNumber,
+    public List<AccountTransactionDTO> getTransactions(@PathVariable(value = "accountNumber", required = false) String accountId,
             @RequestHeader(name = "Authorization") String token) {
         System.out.println("token is " + token);
+        Long accountNumber = Long.valueOf(accountId.substring(3));
         if (accountRepository.existsById(accountNumber)) {
             return accountTransactionService.getTransactionsForAccount(accountNumber);
         }
@@ -74,7 +76,7 @@ public class AccountController {
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void error(Exception e) {
-        LOGGER.error("e.getMessag", e);
+        LOGGER.error(e.getMessage(), e);
     }
 
     @ExceptionHandler(NoSuchElementException.class)

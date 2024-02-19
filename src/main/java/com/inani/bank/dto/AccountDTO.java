@@ -10,7 +10,7 @@ import com.inani.bank.enums.AccountType;
 
 public class AccountDTO implements Serializable {
 
-    private Long accountNumber;
+    private String accountNumber;
     private String accountHolder;
     private BigDecimal balance;
     private Date openingDate;
@@ -24,7 +24,7 @@ public class AccountDTO implements Serializable {
     public AccountDTO(Long accountNumber, String accountHolder, BigDecimal balance, Date openingDate,
             AccountType accountType, String email, String mobile, String address, String panCardNumber,
             String aadharCardNumber) {
-        this.accountNumber = accountNumber;
+        this.accountNumber = accountNumber != null ? "ACC" + Long.toString(accountNumber) : null;
         this.accountHolder = accountHolder;
         this.balance = balance;
         this.openingDate = openingDate;
@@ -37,7 +37,7 @@ public class AccountDTO implements Serializable {
     }
 
     public AccountDTO(Account account) {
-        this.accountNumber = account.getAccountNumber();
+        this.accountNumber = "ACC" + Long.toString(account.getAccountNumber());
         this.accountHolder = account.getAccountHolder();
         this.balance = account.getBalance();
         this.openingDate = new Date(account.getOpeningDate().getTime());
@@ -50,16 +50,19 @@ public class AccountDTO implements Serializable {
     }
 
     public Account toDomainObject() {
-        return new Account(this.getAccountNumber(), this.getAccountHolder(), this.getBalance(),
+        return new Account(
+                this.getAccountNumber() != null ? Long.parseLong(this.getAccountNumber().substring(3)) : null,
+                this.getAccountHolder(),
+                this.getBalance(),
                 new Timestamp(this.getOpeningDate().getTime()), this.getAccountType(), this.getEmail(),
                 this.getMobile(), this.getAddress(), this.getPanCardNumber(), this.getAadharCardNumber(), null);
     }
 
-    public Long getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(Long accountNumber) {
+    public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 

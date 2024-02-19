@@ -43,7 +43,8 @@ public class AccountTransactionController {
             throws Exception {
         if (nullCheck(accountTransactionDTO)) {
             AccountTransaction accountTransaction = accountTransactionDTO.toDomainObject();
-            accountTransaction.setAccount(accountService.getAccount(accountTransactionDTO.getAccountNumber()).get());
+            accountTransaction.setAccount(accountService
+                    .getAccount(Long.valueOf(accountTransactionDTO.getAccountNumber().substring(3))).get());
             return new AccountTransactionDTO(accountTransactionRepository.save(accountTransaction));
         }
         throw new Exception("couldn't save transaction");
