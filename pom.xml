@@ -15,6 +15,8 @@
 	<description>Project for Inani Bank</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<frontend-src-dir>${project.basedir}/src/main/frontend</frontend-src-dir>
+		<frontend-build-dir>${project.basedir}/src/main/frontend/build</frontend-build-dir>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -29,6 +31,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- <dependency>
+            <groupId>org.springframework.boot</groupId> 
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency> -->
 		<!-- <dependency>
       		<groupId>org.springframework.boot</groupId>
       		<artifactId>spring-boot-starter-security</artifactId>
@@ -58,5 +64,137 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- <build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+            	<groupId>com.github.eirslett</groupId>
+            	<artifactId>frontend-maven-plugin</artifactId>
+            	<version>1.12.0</version>
+				<configuration>
+					<workingDirectory>${frontend-src-dir}</workingDirectory>
+                    <installDirectory>${project.build.directory}</installDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm run build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+            	</executions>
+        	</plugin>
+		</plugins>
+	</build>	 -->
+
+
+	<!-- <build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.7.6</version>
+                <configuration>
+                    <nodeVersion>v18.17.1</nodeVersion>
+                    <workingDirectory>${frontend-src-dir}</workingDirectory>
+                    <installDirectory>${project.build.directory}</installDirectory>
+                </configuration>
+                <executions>
+					<execution>
+                        <id>install-frontend-tools</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>npm-install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build-frontend</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+							<arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+					<execution>
+                        <id>serve-frontend</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+							<arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin> 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.3.2</version>
+				<configuration>
+					<workingDirectory>${frontend-build-dir}</workingDirectory>	
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>serve</executable>
+						</configuration>
+					</execution>
+				</executions>
+          	</plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>position-react-build</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend-src-dir}/build</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+		</plugins>
+	</build> -->
 
 </project>
