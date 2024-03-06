@@ -1,7 +1,18 @@
 import { Link } from "react-router-dom";
+//import LoginButton from "./LoginButton"
 
-export default function NavBar(){
-    return (
+
+const LoginButton = () => {
+  //let isLoggedIn = false;
+  if(window.sessionStorage.getItem("user-info")){
+    return <Link className="nav-link" to="logout">Logout</Link>
+  }else {
+    return <Link className="nav-link" to="login">Login</Link> 
+  }       
+}
+
+export default function NavBar({stage}){
+  return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
         <div className="container-fluid">
           <Link className="navbar-brand" to="">Bank UI</Link>
@@ -17,7 +28,7 @@ export default function NavBar(){
                 <Link className="nav-link" to="about">About</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="login">Login</Link>
+                <LoginButton/>
               </li>
             </ul>
           </div>

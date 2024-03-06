@@ -2,8 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Login(){
+export default function LoggingPage({updateStage,setUser}){
 
+    //const {updateStage} = props;
+    //console.log("type in loggingPage is "+typeof updateStage);
     const [credentials,setCredentials] = useState({
         username:"",
         password:""
@@ -27,16 +29,25 @@ export default function Login(){
 
         //console.log(JSON.stringify(credentials));
     }
+
+    const api = axios.create({
+        baseURL: '/api',  // Use the same path as specified in setupProxy.js
+    });
  
     const navigate = useNavigate();
     const submitHandler = (e)=>{
         e.preventDefault();
         console.log(JSON.stringify(credentials));
-        axios.post("http://localhost:8081/users/login",credentials)
+        api.post("/users/login",credentials)
         .then(resp=>{
             window.sessionStorage.setItem("user-info", JSON.stringify(resp.data));
-            navigate("/")
-        })
+            updateStage("loggedIn");
+            setUser(credentials.username)
+            navigate("/");
+        }).catch((error) => {
+            // Handle errors, if any
+            console.error("Login failed:", error);
+        });
     }
 
     return (

@@ -23,8 +23,8 @@ import com.inani.bank.repository.UserRepository;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(path = "/users")
+//@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(path = "/api/users")
 public class UserController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
