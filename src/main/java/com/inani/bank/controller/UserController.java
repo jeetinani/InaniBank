@@ -7,9 +7,9 @@ import javax.security.sasl.AuthenticationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +29,8 @@ public class UserController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
+    @Value("${token}")
+    private String token;
     private UserRepository userRepository;
 
     public UserController(UserRepository userRepository) {
@@ -46,7 +48,7 @@ public class UserController {
     public String login(@RequestBody @Validated User user) throws AuthenticationException {
         System.out.println(user);
         if (matchCredentials(user)) {
-            return "authentic";// BCrypt.hashpw("authentic", BCrypt.gensalt());
+            return token;// BCrypt.hashpw("authentic", BCrypt.gensalt());
         }
         throw new AuthenticationException("invalid credentials");
     }
