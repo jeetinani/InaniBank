@@ -10,6 +10,7 @@ export default function LoggingPage({updateStage,setUser}){
         username:"",
         password:""
     });
+    const [alert, setAlert] = useState("");
 
     const textNameChangeHandler = (e)=>{
         e.preventDefault();
@@ -26,7 +27,9 @@ export default function LoggingPage({updateStage,setUser}){
                 password:e.target.value
             })
         }
-
+        if(alert!==""){
+            setAlert("")
+        }
         //console.log(JSON.stringify(credentials));
     }
 
@@ -46,7 +49,11 @@ export default function LoggingPage({updateStage,setUser}){
             navigate("/");
         }).catch((error) => {
             // Handle errors, if any
+            //console.log(JSON.stringify(error));
             console.error("Login failed:", error);
+            if(error.response.status===400){
+                setAlert("Invalid Credentials");
+            }
         });
     }
 
@@ -68,6 +75,9 @@ export default function LoggingPage({updateStage,setUser}){
                     </div>
                     <div className="mb-3">
                         <button type="submit" className="btn btn-success" name="submit">Login</button>
+                    </div>
+                    <div>
+                        {alert}
                     </div>
                     </form>
                 </div>
