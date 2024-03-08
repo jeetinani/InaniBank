@@ -67,12 +67,12 @@ export default function Home({ context }) {
                     resp => setAccounts(resp.data)
                 )
         }
-    }, []);
+    }, [userInfo]);
 
     return (
         <>
             <>
-                {actionParam === "loggedOut" ? (<div>Logged Out</div>) : (<></>)}
+                {actionParam === "logout" ? (<div>Logged Out</div>) : (<></>)}
             </>
             {context.stage === "loggedIn" ? (
                 <div className="row">
