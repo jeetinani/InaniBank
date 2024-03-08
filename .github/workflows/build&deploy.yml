@@ -1,0 +1,42 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8' # Change this to '8'
+
+      - name: Build Spring Project
+        run: ./mvnw clean install
+
+      - name: Copy JAR to OCI Instance
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.OCI_INSTANCE_IP }}
+          username: ${{ secrets.OCI_INSTANCE_USERNAME }}
+          key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
+          source: 'target/bank-0.0.1-SNAPSHOT.jar'
+          target: '/bank/app/runtime/bank-0.0.1-SNAPSHOT.jar'
+
+      - name: SSH into OCI Instance and Run Application
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.OCI_INSTANCE_IP }}
+          username: ${{ secrets.OCI_INSTANCE_USERNAME }}
+          key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
+          script: |
+            cd /bank/app/runtime/
+            java -jar bank-0.0.1-SNAPSHOT.jar
