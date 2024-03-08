@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,7 @@ import com.inani.bank.repository.AccountTransactionRepository;
 import com.inani.bank.service.AccountService;
 
 @RestController
+@RequestMapping (path = "/api")
 public class AccountTransactionController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(AccountTransactionController.class);

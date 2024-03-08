@@ -43,7 +43,7 @@ public class AccountController {
     }
 
     @GetMapping("/accounts")
-    public List<AccountDTO> getAccounts(@RequestHeader(name = "Authorization", required = false) String token) {
+    public List<AccountDTO> getAccounts(@RequestHeader(name = "Authorization", required = true) String token) {
         //System.out.println("token is " + token);
         validate(token);
         return accountRepository.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class AccountController {
 
     @GetMapping("/accounts/{accountNumber}")
     public AccountDTO getMethodName(@PathVariable(value = "accountNumber", required = false) String accountId,
-            @RequestHeader(name = "Authorization") String token) {
+            @RequestHeader(name = "Authorization", required = true) String token) {
         //System.out.println("token is " + token);
         validate(token);
         Long accountNumber = Long.valueOf(accountId.substring(3));
@@ -63,7 +63,7 @@ public class AccountController {
 
     @GetMapping("/accounts/{accountNumber}/transactions")
     public List<AccountTransactionDTO> getTransactions(@PathVariable(value = "accountNumber", required = false) String accountId,
-            @RequestHeader(name = "Authorization") String token) {
+            @RequestHeader(name = "Authorization", required = true) String token) {
         //System.out.println("token is " + token);
         validate(token);
         Long accountNumber = Long.valueOf(accountId.substring(3));
@@ -90,7 +90,7 @@ public class AccountController {
     private void validate(String token) {
         //System.out.printf("token recieved is %s and should be %s",token,this.token);
         //System.out.println("");
-        if(!token.equals(this.token)){
+        if(token!=null && !token.equals(this.token)){
             throw new RuntimeException("Invalid token");
         }
     }
