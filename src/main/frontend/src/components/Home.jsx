@@ -49,9 +49,6 @@ export default function Home({ context }) {
     //const user = queryParams.get('user');
 
 
-    const api = axios.create({
-        baseURL: '/api',  // Use the same path as specified in setupProxy.js
-    });
     let userInfo = window.sessionStorage.getItem("user-info");
     /* let accounts = [];
     function setAccounts(data){
@@ -65,7 +62,7 @@ export default function Home({ context }) {
                     "Authorization": `${userInfo}`,
                 }
             };
-            api.get(`/accounts`, options)
+            axios.get(`/api/accounts`, options)
                 .then(
                     resp => setAccounts(resp.data)
                 )

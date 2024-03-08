@@ -32,16 +32,12 @@ export default function LoggingPage({updateContext}){
         }
         //console.log(JSON.stringify(credentials));
     }
-
-    const api = axios.create({
-        baseURL: '/api',  // Use the same path as specified in setupProxy.js
-    });
  
     const navigate = useNavigate();
     const submitHandler = (e)=>{
         e.preventDefault();
         console.log(JSON.stringify(credentials));
-        api.post("/users/login",credentials)
+        axios.post("/api/users/login",credentials)
         .then(resp=>{
             window.sessionStorage.setItem("user-info", resp.data);
             updateContext({stage:"loggedIn",

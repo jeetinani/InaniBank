@@ -6,7 +6,6 @@ import Home from './components/Home';
 import Layout from "./components/Layout";
 import LoggingPage from './components/LoggingPage';
 import Logout from "./components/Logout";
-import NavBar from "./components/NavBar";
 //import LearnMiddle from './components/LearnMiddle';
 import { useState } from 'react';
 

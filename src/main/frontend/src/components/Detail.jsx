@@ -7,9 +7,6 @@ export default function Detail() {
     const [account, setAccount] = useState();
     const [transactions, setTransactions] = useState([]);
 
-    const api = axios.create({
-        baseURL: '/api',  // Use the same path as specified in setupProxy.js
-    });
     useEffect(() => {
         let userInfo = window.sessionStorage.getItem("user-info");
         if (userInfo) {
@@ -19,11 +16,11 @@ export default function Detail() {
                     "Authorization": `${userInfo}`
                 }
             };
-            api.get(`/accounts/${params.acno}`, options)
+            axios.get(`/api/accounts/${params.acno}`, options)
                 .then(
                     resp => setAccount(resp.data)
                 );
-            api.get(`/accounts/${params.acno}/transactions`, options)
+            axios.get(`/api/accounts/${params.acno}/transactions`, options)
                 .then(
                     resp =>  setTransactions(resp.data)
                 );
