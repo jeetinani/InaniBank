@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 //import LoginButton from "./LoginButton"
 
 
-const LoginButton = () => {
+const LoginButton = ({stage}) => {
   //let isLoggedIn = false;
-  if(window.sessionStorage.getItem("user-info")){
+  if(/* window.sessionStorage.getItem("user-info") */stage==="loggedIn"){
     return <Link className="nav-link" to="logout">Logout</Link>
   }else {
     return <Link className="nav-link" to="login">Login</Link> 
@@ -28,7 +28,7 @@ export default function NavBar({stage}){
                 <Link className="nav-link" to="about">About</Link>
               </li>
               <li className="nav-item">
-                <LoginButton/>
+                <LoginButton stage={stage}/>
               </li>
             </ul>
           </div>

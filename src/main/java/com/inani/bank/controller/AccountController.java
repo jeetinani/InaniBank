@@ -88,6 +88,8 @@ public class AccountController {
     }
 
     private void validate(String token) {
+        //System.out.printf("token recieved is %s and should be %s",token,this.token);
+        //System.out.println("");
         if(!token.equals(this.token)){
             throw new RuntimeException("Invalid token");
         }

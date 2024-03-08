@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function LoggingPage({updateStage,setUser}){
+export default function LoggingPage({updateContext}){
 
     //const {updateStage} = props;
     //console.log("type in loggingPage is "+typeof updateStage);
@@ -43,10 +43,10 @@ export default function LoggingPage({updateStage,setUser}){
         console.log(JSON.stringify(credentials));
         api.post("/users/login",credentials)
         .then(resp=>{
-            window.sessionStorage.setItem("user-info", JSON.stringify(resp.data));
-            updateStage("loggedIn");
-            setUser(credentials.username)
-            navigate("/");
+            window.sessionStorage.setItem("user-info", resp.data);
+            updateContext({stage:"loggedIn",
+            user:credentials.username});
+            navigate(`/`);
         }).catch((error) => {
             // Handle errors, if any
             //console.log(JSON.stringify(error));

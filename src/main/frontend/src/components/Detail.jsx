@@ -28,7 +28,7 @@ export default function Detail() {
                     resp =>  setTransactions(resp.data)
                 );
         }
-    }, [params,api])
+    })
 
 
     return (

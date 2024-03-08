@@ -3,20 +3,18 @@ import './App.css';
 import About from './components/About';
 import Detail from './components/Detail';
 import Home from './components/Home';
-import Layout from './components/Layout';
+import Layout from "./components/Layout";
 import LoggingPage from './components/LoggingPage';
 import Logout from "./components/Logout";
+import NavBar from "./components/NavBar";
 //import LearnMiddle from './components/LearnMiddle';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function App() {
 
-  const [stage,updateStage] = useState("blank");
-  console.log("Type is "+typeof updateStage);
-  const [user, setUser] = useState("")
-  useEffect(()=>{
-    console.log("user now is " + user);
-  },[user])
+  const [context,updateContext] = useState({user:"",stage:"blank"});
+  //console.log("Type is "+typeof updateStage);
+  //const [user, setUser] = useState("")
   //const name = "Jeet Inani";
   return (
     /* <div className="App">
@@ -24,15 +22,17 @@ function App() {
       <h2>My Name is {name}</h2>
       <Home uname={name}/>
     </div> */
+    <>
     <Routes>
-      <Route path='/' element={<Layout stage={stage}/>}>
-        <Route index element={<Home stage={stage} user={user}/>}/>
+      <Route path='/' element={<Layout stage={context.stage}/>}>
+        <Route index element={<Home context={context}/>}/>
         <Route path='about' element={<About/>}/>
-        <Route path='login' element={<LoggingPage updateStage={updateStage} setUser={setUser}/>}/>
-        <Route path='/logout' element={<Logout updateStage={updateStage}/>}/>
+        <Route path='login' element={<LoggingPage updateContext={updateContext}/>}/>
+        <Route path='logout' element={<Logout updateStage={(newstage)=>{updateContext({...context,stage:newstage})}}/>}/>
         <Route path='account/detail/:acno' element={ <Detail/> } />
       </Route>
     </Routes>  
+    </>
   );
 }
 
