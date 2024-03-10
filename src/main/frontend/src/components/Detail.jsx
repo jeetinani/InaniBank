@@ -4,8 +4,10 @@ import { useParams } from "react-router-dom";
 
 export default function Detail() {
     const params = useParams();
-    const [account, setAccount] = useState();
-    const [transactions, setTransactions] = useState([]);
+    const [accountDetails, setAccountDetails] = useState({
+        account: null,
+        transactions: []
+    })
 
     useEffect(() => {
         let userInfo = window.sessionStorage.getItem("user-info");
@@ -16,14 +18,16 @@ export default function Detail() {
                     "Authorization": `${userInfo}`
                 }
             };
-            axios.get(`/api/accounts/${params.acno}`, options)
-                .then(
-                    resp => setAccount(resp.data)
-                );
-            axios.get(`/api/accounts/${params.acno}/transactions`, options)
-                .then(
-                    resp =>  setTransactions(resp.data)
-                );
+            axios.all([
+                axios.get(`/api/accounts/${params.acno}`, options),
+                axios.get(`/api/accounts/${params.acno}/transactions`, options)
+            ]).then(axios.spread((accResponse, transactionsResponse) => {
+                setAccountDetails({
+                    account: accResponse.data,
+                    transactions: transactionsResponse.data
+                })
+            })
+            );
         }
     })
 
@@ -32,31 +36,31 @@ export default function Detail() {
         <div>
             <div>
                 <h3>Account Details</h3>
-                {account &&
+                {accountDetails.account &&
                     <dl>
                         <dt>Account Number</dt>
-                        <dd>{account.accountNumber}</dd>
+                        <dd>{accountDetails.account.accountNumber}</dd>
                         <dt>Account Holder</dt>
-                        <dd>{account.accountHolder}</dd>
+                        <dd>{accountDetails.account.accountHolder}</dd>
                         <dt>Account Type</dt>
-                        <dd>{account.accountType}</dd>
+                        <dd>{accountDetails.account.accountType}</dd>
                         <dt>Balance</dt>
-                        <dd>{account.balance}</dd>
+                        <dd>{accountDetails.account.balance}</dd>
                         <dt>Start Date</dt>
-                        <dd>{account.openingDate}</dd>
+                        <dd>{accountDetails.account.openingDate}</dd>
                         <dt>PAN card</dt>
-                        <dd>{account.panCardNumber}</dd>
+                        <dd>{accountDetails.account.panCardNumber}</dd>
                         <dt>Aadhar Number</dt>
-                        <dd>{account.aadharCardNumber}</dd>
+                        <dd>{accountDetails.account.aadharCardNumber}</dd>
                         <dt>Mobile</dt>
-                        <dd>{account.mobile}</dd>
+                        <dd>{accountDetails.account.mobile}</dd>
                         <dt>Email</dt>
-                        <dd>{account.email}</dd>
+                        <dd>{accountDetails.account.email}</dd>
                     </dl>
                 }
             </div>
             <div>
-            <h3>Transactions</h3>
+                <h3>Transactions</h3>
                 <table className="table table-sm table-striped table-bordered">
                     <thead>
                         <tr>
@@ -69,7 +73,7 @@ export default function Detail() {
                     </thead>
                     <tbody>
                         {
-                            transactions.map((trn, index) => {
+                            accountDetails.transactions.map((trn, index) => {
                                 return <tr key={index} >
                                     <td>{trn.transactionId}</td>
                                     <td>{trn.description}</td>
