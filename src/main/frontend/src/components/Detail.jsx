@@ -18,18 +18,17 @@ export default function Detail() {
                     "Authorization": `${userInfo}`
                 }
             };
-            axios.all([
+            Promise.all([
                 axios.get(`/api/accounts/${params.acno}`, options),
                 axios.get(`/api/accounts/${params.acno}/transactions`, options)
-            ]).then(axios.spread((accResponse, transactionsResponse) => {
+            ]).then(([accResponse, transactionsResponse])=> {
                 setAccountDetails({
                     account: accResponse.data,
                     transactions: transactionsResponse.data
                 })
-            })
-            );
+            });
         }
-    })
+    }, [params])
 
 
     return (
