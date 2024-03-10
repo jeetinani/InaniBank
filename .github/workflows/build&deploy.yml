@@ -48,5 +48,5 @@ jobs:
           username: ${{ secrets.OCI_INSTANCE_USERNAME }}
           key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
           script: |
-            cd bank/app/runtime/target
-            java -jar bank-0.0.1-SNAPSHOT.jar
+            sudo systemctl stop bank-application
+            sudo systemctl start bank-application
