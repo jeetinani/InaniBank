@@ -21,5 +21,5 @@ Once you place the file there, you need to enable it and reload systemctl.
   sudo systemctl enable bank-application
 
   #reload
-  sudo systemclt daemon-reload
+  sudo systemctl daemon-reload
 ```
