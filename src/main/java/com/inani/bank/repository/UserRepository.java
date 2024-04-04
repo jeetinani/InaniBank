@@ -9,7 +9,7 @@ import com.inani.bank.domain.User;
 
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Long>{
+public interface UserRepository extends JpaRepository<User,String>{
     public Optional<User> findByUsername(String username);
 
 }
