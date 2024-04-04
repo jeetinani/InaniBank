@@ -1,11 +1,15 @@
 Hi,
 
-This is as simple Banking Application Project built by passion and zeal to learn SpringBoot(backend) and ReactJS(frontend).
+### This is as simple Banking Application Project built by passion and zeal to learn SpringBoot(backend) and ReactJS(frontend).
 
 This project uses sqlite database to persist data.
 Simple session token authentication is used to manage login sessions.
 The ReactJS frontend is packed into a static build and copied into Spring project's static folder and served using a thymeleaf index.html template.
 
+To run locally, checkout the rpository into your local and run the Spring Boot Maven Plugin run command.
+```
+./mvnw spring-boot:run
+```
 
 There is a github action created to Build the project into a jar and place it in a linux instance using scp.
 Then action will then ssh into the linux instance and start a systemctl service (bank-application.service) in the instance to run the jar.
@@ -17,5 +21,5 @@ Once you place the file there, you need to enable it and reload systemctl.
   sudo systemctl enable bank-application
 
   #reload
-  sudo systemclt daemon-reload
+  sudo systemctl daemon-reload
 ```
