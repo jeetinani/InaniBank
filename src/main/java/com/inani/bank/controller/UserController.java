@@ -90,6 +90,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody User user) {
+        System.out.println(user);
         User authenticatedUser = authenticate(user);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
