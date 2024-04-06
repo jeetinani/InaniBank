@@ -49,17 +49,17 @@ export default function Home({ context }) {
     //const user = queryParams.get('user');
 
 
-    let userInfo = window.sessionStorage.getItem("user-info");
+    let token = window.sessionStorage.getItem("user-info");
     /* let accounts = [];
     function setAccounts(data){
         accounts = data;
     } */
     useEffect(() => {
-        if (userInfo) {
+        if (token) {
             //let token = JSON.parse(userInfo).token;
             let options = {
                 headers: {
-                    "Authorization": `${userInfo}`,
+                    "Authorization": `Bearer ${token}`,
                 }
             };
             axios.get(`/api/accounts`, options)
@@ -67,7 +67,7 @@ export default function Home({ context }) {
                     resp => setAccounts(resp.data)
                 )
         }
-    }, [userInfo]);
+    }, [token]);
 
     return (
         <>

@@ -10,12 +10,12 @@ export default function Detail() {
     })
 
     useEffect(() => {
-        let userInfo = window.sessionStorage.getItem("user-info");
-        if (userInfo) {
+        let token = window.sessionStorage.getItem("user-info");
+        if (token) {
             //let token = JSON.parse(userInfo).token;
             let options = {
                 headers: {
-                    "Authorization": `${userInfo}`
+                    "Authorization": `Bearer ${token}`
                 }
             };
             Promise.all([
