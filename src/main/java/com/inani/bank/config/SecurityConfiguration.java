@@ -32,10 +32,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .antMatchers("/api/users/**")
-                        .permitAll()
+                        .antMatchers("/api/**")
+                        .authenticated()
                         .anyRequest()
-                        .authenticated())
+                        .permitAll())
                 .sessionManagement(management -> management
                         .sessionCreationPolicy(SessionCreationPolicy.NEVER))
                 .authenticationProvider(authenticationProvider)
@@ -48,7 +48,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
 

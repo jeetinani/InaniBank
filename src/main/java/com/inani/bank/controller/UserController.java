@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.inani.bank.domain.User;
 import com.inani.bank.repository.UserRepository;
+import com.inani.bank.request.LoginRequest;
 import com.inani.bank.response.LoginResponse;
 import com.inani.bank.service.JwtService;
 
 
 @RestController
 // @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(path = "/api/users")
+@RequestMapping(path = "/auth")
 public class UserController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
@@ -89,9 +90,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody User user) {
-        System.out.println(user);
-        User authenticatedUser = authenticate(user);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        System.out.println(loginRequest);
+        User authenticatedUser = authenticate(loginRequest);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
@@ -100,13 +101,13 @@ public class UserController {
         return ResponseEntity.ok(loginResponse);
     }
 
-    public User authenticate(User user) {
+    public User authenticate(LoginRequest loginRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                    user.getUsername(),
-                    user.getPassword()));
+                    loginRequest.getUsername(),
+                    loginRequest.getPassword()));
 
-        return userRepository.findByUsername(user.getUsername()).get();
+        return userRepository.findByUsername(loginRequest.getUsername()).get();
     }
 
     /*
