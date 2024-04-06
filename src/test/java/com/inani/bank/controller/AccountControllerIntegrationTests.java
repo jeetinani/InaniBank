@@ -11,12 +11,4 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AccountControllerIntegrationTests {
 
-    @Autowired
-    private AccountController accountController;
-
-    @Test
-    public void testTokenValidation() {
-        assertThrows(Exception.class, () -> accountController.getAccounts("invalid token"));
-    }
-
 }

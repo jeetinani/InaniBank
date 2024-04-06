@@ -30,9 +30,6 @@ import com.inani.bank.service.AccountTransactionService;
 @RequestMapping(path = "/api")
 public class AccountController {
 
-    @Value("${token}")
-    private String token;
-
     private AccountRepository accountRepository;
     private AccountTransactionService accountTransactionService;
     private static Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
@@ -43,17 +40,14 @@ public class AccountController {
     }
 
     @GetMapping("/accounts")
-    public List<AccountDTO> getAccounts(@RequestHeader(name = "Authorization", required = true) String token) {
+    public List<AccountDTO> getAccounts() {
         //System.out.println("token is " + token);
-        validate(token);
         return accountRepository.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
     }
 
     @GetMapping("/accounts/{accountNumber}")
-    public AccountDTO getMethodName(@PathVariable(value = "accountNumber", required = false) String accountId,
-            @RequestHeader(name = "Authorization", required = true) String token) {
+    public AccountDTO getMethodName(@PathVariable(value = "accountNumber", required = false) String accountId) {
         //System.out.println("token is " + token);
-        validate(token);
         Long accountNumber = Long.valueOf(accountId.substring(3));
         if (accountRepository.existsById(accountNumber)) {
             return new AccountDTO(accountRepository.findById(accountNumber).get());
@@ -62,10 +56,8 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/{accountNumber}/transactions")
-    public List<AccountTransactionDTO> getTransactions(@PathVariable(value = "accountNumber", required = false) String accountId,
-            @RequestHeader(name = "Authorization", required = true) String token) {
+    public List<AccountTransactionDTO> getTransactions(@PathVariable(value = "accountNumber", required = false) String accountId) {
         //System.out.println("token is " + token);
-        validate(token);
         Long accountNumber = Long.valueOf(accountId.substring(3));
         if (accountRepository.existsById(accountNumber)) {
             return accountTransactionService.getTransactionsForAccount(accountNumber);
@@ -87,28 +79,13 @@ public class AccountController {
         LOGGER.error(e.getMessage(), e);
     }
 
-    private void validate(String token) {
-        //System.out.printf("token recieved is %s and should be %s",token,this.token);
-        //System.out.println("");
-        if(token!=null && !token.equals(this.token)){
-            throw new RuntimeException("Invalid token");
-        }
-    }
-
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void noAccount(NoSuchElementException e) {
         LOGGER.error(e.getMessage(), e);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public void invalidToken(RuntimeException e){
-        LOGGER.error(e.getMessage(),e);
-    }
-
     private boolean nullCheck(AccountDTO accountDTO) {
         return accountDTO.getAccountType() != null;
     }
-
 }
