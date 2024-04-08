@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.inani.bank.request.SignupRequest;
 
 @Entity
 public class User implements UserDetails {
@@ -28,20 +29,20 @@ public class User implements UserDetails {
     public User() {
     }
 
+    
+
+    public User(SignupRequest signupRequest) {
+        this.username = signupRequest.getUsername();
+        this.password = signupRequest.getPassword();
+        this.email = signupRequest.getEmail();
+    }
+
+
+
     @Override
     public String toString() {
         return "User [username=" + username + ", password=" + password + "]";
     }
-
-    /*
-     * public Long getId() {
-     * return id;
-     * }
-     * 
-     * public void setId(Long id) {
-     * this.id = id;
-     * }
-     */
 
     public String getUsername() {
         return username;
@@ -69,31 +70,26 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public boolean isEnabled() {
-        // TODO Auto-generated method stub
         return true;
     }
 

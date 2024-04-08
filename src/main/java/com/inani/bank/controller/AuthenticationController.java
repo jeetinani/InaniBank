@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inani.bank.domain.User;
 import com.inani.bank.repository.UserRepository;
 import com.inani.bank.request.LoginRequest;
+import com.inani.bank.request.SignupRequest;
 import com.inani.bank.response.LoginResponse;
 import com.inani.bank.service.JwtService;
 
@@ -34,10 +34,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody @Validated User user) {
-        System.out.println(user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return ResponseEntity.ok(userRepository.save(user));
+    public ResponseEntity<User> signUp(@RequestBody SignupRequest signupRequest) {
+        System.out.println(signupRequest);
+        signupRequest.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        return ResponseEntity.ok(userRepository.save(new User(signupRequest)));
     }
 
     @PostMapping("/login")
