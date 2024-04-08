@@ -10,12 +10,12 @@ export default function Detail() {
     })
 
     useEffect(() => {
-        let userInfo = window.sessionStorage.getItem("user-info");
-        if (userInfo) {
+        let token = window.sessionStorage.getItem("user-info");
+        if (token) {
             //let token = JSON.parse(userInfo).token;
             let options = {
                 headers: {
-                    "Authorization": `${userInfo}`
+                    "Authorization": `Bearer ${token}`
                 }
             };
             Promise.all([
@@ -47,7 +47,7 @@ export default function Detail() {
                         <dd>{accountDetails.account.balance}</dd>
                         <dt>Start Date</dt>
                         <dd>{accountDetails.account.openingDate}</dd>
-                        <dt>PAN card</dt>
+                        <dt>PAN Number</dt>
                         <dd>{accountDetails.account.panCardNumber}</dd>
                         <dt>Aadhar Number</dt>
                         <dd>{accountDetails.account.aadharCardNumber}</dd>

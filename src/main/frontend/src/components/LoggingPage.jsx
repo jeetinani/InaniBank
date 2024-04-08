@@ -37,9 +37,9 @@ export default function LoggingPage({updateContext}){
     const submitHandler = (e)=>{
         e.preventDefault();
         console.log(JSON.stringify(credentials));
-        axios.post("/api/users/login",credentials)
+        axios.post("/auth/login",credentials)
         .then(resp=>{
-            window.sessionStorage.setItem("user-info", resp.data);
+            window.sessionStorage.setItem("user-info", resp.data.token);
             updateContext({stage:"loggedIn",
             user:credentials.username});
             navigate(`/`);
@@ -47,7 +47,7 @@ export default function LoggingPage({updateContext}){
             // Handle errors, if any
             //console.log(JSON.stringify(error));
             console.error("Login failed:", error);
-            if(error.response.status===400){
+            if(error.response.status===403){
                 setAlert("Invalid Credentials");
             }
         });

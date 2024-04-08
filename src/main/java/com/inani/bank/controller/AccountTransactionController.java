@@ -20,7 +20,7 @@ import com.inani.bank.repository.AccountTransactionRepository;
 import com.inani.bank.service.AccountService;
 
 @RestController
-@RequestMapping (path = "/api")
+@RequestMapping(path = "/api")
 public class AccountTransactionController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(AccountTransactionController.class);

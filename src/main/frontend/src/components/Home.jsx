@@ -49,25 +49,30 @@ export default function Home({ context }) {
     //const user = queryParams.get('user');
 
 
-    let userInfo = window.sessionStorage.getItem("user-info");
+    let token = window.sessionStorage.getItem("user-info");
+    //console.log(`token fetched now is ${token}`)
     /* let accounts = [];
     function setAccounts(data){
         accounts = data;
     } */
+
     useEffect(() => {
-        if (userInfo) {
+        console.log(`in useEffect of home.jsx`)
+        if (context.stage === "loggedIn" && token) {
             //let token = JSON.parse(userInfo).token;
             let options = {
                 headers: {
-                    "Authorization": `${userInfo}`,
+                    "Authorization": `Bearer ${token}`,
                 }
             };
             axios.get(`/api/accounts`, options)
                 .then(
-                    resp => setAccounts(resp.data)
+                    resp => {
+                        setAccounts(resp.data);
+                    }
                 )
         }
-    }, [userInfo]);
+    }, [context]);
 
     return (
         <>
