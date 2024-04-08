@@ -22,6 +22,15 @@ jobs:
 
       - name: Build Spring Project
         run: ./mvnw clean install
+      
+      - name: SSH into OCI Instance and Stop old Application
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.OCI_INSTANCE_IP }}
+          username: ${{ secrets.OCI_INSTANCE_USERNAME }}
+          key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
+          script: |
+            sudo systemctl stop bank-application
 
       - name: Delete Existing Files in OCI Instance
         uses: appleboy/ssh-action@master
@@ -31,6 +40,7 @@ jobs:
           key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
           script: |
             rm -rf bank/app/runtime/target
+            rm bank/app/runtime/bank-0.0.1-SNAPSHOT.jar
          
       - name: Copy JAR to OCI Instance
         uses: appleboy/scp-action@master
@@ -49,5 +59,4 @@ jobs:
           key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
           script: |
             mv bank/app/runtime/target/bank-0.0.1-SNAPSHOT.jar bank/app/runtime/bank-0.0.1-SNAPSHOT.jar
-            sudo systemctl stop bank-application
             sudo systemctl start bank-application
