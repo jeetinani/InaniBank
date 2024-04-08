@@ -30,7 +30,7 @@ function App() {
           }
         )
     }
-  }, []);
+  }, [token]);
 
   //console.log("Type is "+typeof updateStage);
   //const [user, setUser] = useState("")
