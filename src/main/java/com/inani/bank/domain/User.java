@@ -13,14 +13,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User implements UserDetails {
-    /*
-     * @Id
-     * 
-     * @Column
-     * 
-     * @GeneratedValue(strategy = GenerationType.IDENTITY)
-     * private Long id;
-     */
 
     @Id
     @Column

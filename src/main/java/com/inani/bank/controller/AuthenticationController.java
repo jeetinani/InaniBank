@@ -16,7 +16,6 @@ import com.inani.bank.request.LoginRequest;
 import com.inani.bank.response.LoginResponse;
 import com.inani.bank.service.JwtService;
 
-
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -25,8 +24,6 @@ public class AuthenticationController {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
-    
 
     public AuthenticationController(UserRepository userRepository, PasswordEncoder passwordEncoder,
             JwtService jwtService, AuthenticationManager authenticationManager) {
@@ -58,8 +55,8 @@ public class AuthenticationController {
     public User authenticate(LoginRequest loginRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(),
-                    loginRequest.getPassword()));
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()));
 
         return userRepository.findByUsername(loginRequest.getUsername()).get();
     }

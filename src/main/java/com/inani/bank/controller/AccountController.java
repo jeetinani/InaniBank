@@ -24,7 +24,7 @@ import com.inani.bank.repository.AccountRepository;
 import com.inani.bank.service.AccountTransactionService;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path = "/api")
 public class AccountController {
 
@@ -39,13 +39,13 @@ public class AccountController {
 
     @GetMapping("/accounts")
     public List<AccountDTO> getAccounts() {
-        //System.out.println("token is " + token);
+        // System.out.println("token is " + token);
         return accountRepository.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
     }
 
     @GetMapping("/accounts/{accountNumber}")
     public AccountDTO getMethodName(@PathVariable(value = "accountNumber", required = false) String accountId) {
-        //System.out.println("token is " + token);
+        // System.out.println("token is " + token);
         Long accountNumber = Long.valueOf(accountId.substring(3));
         if (accountRepository.existsById(accountNumber)) {
             return new AccountDTO(accountRepository.findById(accountNumber).get());
@@ -54,8 +54,9 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/{accountNumber}/transactions")
-    public List<AccountTransactionDTO> getTransactions(@PathVariable(value = "accountNumber", required = false) String accountId) {
-        //System.out.println("token is " + token);
+    public List<AccountTransactionDTO> getTransactions(
+            @PathVariable(value = "accountNumber", required = false) String accountId) {
+        // System.out.println("token is " + token);
         Long accountNumber = Long.valueOf(accountId.substring(3));
         if (accountRepository.existsById(accountNumber)) {
             return accountTransactionService.getTransactionsForAccount(accountNumber);
