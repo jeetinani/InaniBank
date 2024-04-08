@@ -47,7 +47,7 @@ export default function LoggingPage({updateContext}){
             // Handle errors, if any
             //console.log(JSON.stringify(error));
             console.error("Login failed:", error);
-            if(error.response.status===400){
+            if(error.response.status===403){
                 setAlert("Invalid Credentials");
             }
         });

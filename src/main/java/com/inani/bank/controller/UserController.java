@@ -26,7 +26,7 @@ import com.inani.bank.service.JwtService;
 
 @RestController
 // @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(path = "/auth")
+@RequestMapping(path = "/api")
 public class UserController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
@@ -36,16 +36,9 @@ public class UserController {
      * private String token;
      */
     private UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
 
-    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService,
-            AuthenticationManager authenticationManager) {
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
     }
 
     /* @GetMapping
@@ -53,13 +46,13 @@ public class UserController {
         return userRepository.findAll();
     } */
 
-    @GetMapping("/me")
-    public ResponseEntity<User> getMe() {
+    @GetMapping("/userName")
+    public ResponseEntity<String> getMe() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User currentUser = (User) authentication.getPrincipal();
 
-        return ResponseEntity.ok(currentUser);
+        return ResponseEntity.ok(currentUser.getUsername());
     }
 
     @GetMapping("/all")
@@ -82,7 +75,7 @@ public class UserController {
      * }
      */
 
-    @PostMapping("/signup")
+    /* @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody @Validated User user) {
         System.out.println(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -108,7 +101,7 @@ public class UserController {
                     loginRequest.getPassword()));
 
         return userRepository.findByUsername(loginRequest.getUsername()).get();
-    }
+    } */
 
     /*
      * private boolean matchCredentials(User user) {

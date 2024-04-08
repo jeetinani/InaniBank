@@ -50,12 +50,15 @@ export default function Home({ context }) {
 
 
     let token = window.sessionStorage.getItem("user-info");
+    //console.log(`token fetched now is ${token}`)
     /* let accounts = [];
     function setAccounts(data){
         accounts = data;
     } */
+
     useEffect(() => {
-        if (token) {
+        console.log(`in useEffect of home.jsx`)
+        if (context.stage === "loggedIn" && token) {
             //let token = JSON.parse(userInfo).token;
             let options = {
                 headers: {
@@ -64,10 +67,12 @@ export default function Home({ context }) {
             };
             axios.get(`/api/accounts`, options)
                 .then(
-                    resp => setAccounts(resp.data)
+                    resp => {
+                        setAccounts(resp.data);
+                    }
                 )
         }
-    }, [token]);
+    }, [context]);
 
     return (
         <>
