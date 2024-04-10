@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import { Link, useLocation } from "react-router-dom";
 
-export default function Home({ context }) {
+export default function Home() {
     /* constructor(){
         super();
          this.state ={
@@ -38,6 +39,7 @@ export default function Home({ context }) {
     //if dependencyList is not mentioned then it executes when component mounted or updated
     //if empty array then executes only on mount
     //if an array of variables then executes on mount and when the variable value changes
+    const context = useContext(UserContext);
     const [accounts, setAccounts] = useState([]);
     console.log("stage passed to home = " + context.stage);
     console.log("user passed to home is " + context.user);

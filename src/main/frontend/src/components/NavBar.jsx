@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 //import LoginButton from "./LoginButton"
 
 
@@ -11,7 +13,9 @@ const LoginButton = ({stage}) => {
   }       
 }
 
-export default function NavBar({stage}){
+export default function NavBar(){
+  const context = useContext(UserContext);
+  
   return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
         <div className="container-fluid">
@@ -28,7 +32,7 @@ export default function NavBar({stage}){
                 <Link className="nav-link" to="about">About</Link>
               </li>
               <li className="nav-item">
-                <LoginButton stage={stage}/>
+                <LoginButton stage={context.stage}/>
               </li>
             </ul>
           </div>
