@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.18</version>
+		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.inani</groupId>
@@ -14,7 +14,7 @@
 	<name>bank</name>
 	<description>Project for Inani Bank</description>
 	<properties>
-		<java.version>1.8</java.version>
+		<!-- <java.version>17</java.version> -->
 		<frontend-src-dir>${project.basedir}/src/main/frontend</frontend-src-dir>
 		<frontend-build-dir>${project.basedir}/src/main/frontend/build</frontend-build-dir>
 	</properties>
@@ -32,9 +32,13 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+    		<groupId>org.hibernate.orm</groupId>
+    		<artifactId>hibernate-community-dialects</artifactId>
+		</dependency>
+		<!-- <dependency>
             <groupId>org.springframework.boot</groupId> 
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
+        </dependency> -->
 		<dependency>
       		<groupId>org.springframework.boot</groupId>
       		<artifactId>spring-boot-starter-security</artifactId>
@@ -59,11 +63,11 @@
         	<artifactId>sqlite-jdbc</artifactId>
         	<version>3.41.2.2</version>
  		</dependency>
-		<dependency>
+		<!-- <dependency>
         	<groupId>com.github.gwenn</groupId>
         	<artifactId>sqlite-dialect</artifactId>
         	<version>0.1.2</version>
-    	</dependency>
+    	</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -127,10 +131,6 @@
                             <resources>
                                 <resource>
                                     <directory>${frontend-src-dir}/build</directory>
-                                    <filtering>true</filtering>
-									<excludes>
-          								<exclude>index.html</exclude>
-        							</excludes>
                                 </resource>
                             </resources>
                         </configuration>
