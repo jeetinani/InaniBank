@@ -40,7 +40,7 @@ jobs:
           key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
           script: |
             rm -rf bank/app/runtime/target
-            rm bank/app/runtime/bank-0.0.1-SNAPSHOT.jar
+            rm bank/app/runtime/bank-application.jar
          
       - name: Copy JAR to OCI Instance
         uses: appleboy/scp-action@master
@@ -48,7 +48,7 @@ jobs:
           host: ${{ secrets.OCI_INSTANCE_IP }}
           username: ${{ secrets.OCI_INSTANCE_USERNAME }}
           key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
-          source: 'target/bank-0.0.1-SNAPSHOT.jar'
+          source: 'target/bank-application.jar'
           target: 'bank/app/runtime'
 
       - name: SSH into OCI Instance and Run Application
@@ -58,5 +58,5 @@ jobs:
           username: ${{ secrets.OCI_INSTANCE_USERNAME }}
           key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
           script: |
-            mv bank/app/runtime/target/bank-0.0.1-SNAPSHOT.jar bank/app/runtime/bank-0.0.1-SNAPSHOT.jar
+            mv bank/app/runtime/target/bank-application.jar bank/app/runtime/bank-application.jar
             sudo systemctl start bank-application
