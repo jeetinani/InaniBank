@@ -2,7 +2,7 @@
 Description=My Spring Boot Application
 
 [Service]
-ExecStart=java -jar bank-0.0.1-SNAPSHOT.jar
+ExecStart=java -jar bank-application.jar
 Restart=always
 User=opc
 WorkingDirectory=/home/{user}/bank/app/runtime

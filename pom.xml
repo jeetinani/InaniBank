@@ -76,6 +76,7 @@
 	</dependencies>
 
 	<build>
+	<finalName>bank-application</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
