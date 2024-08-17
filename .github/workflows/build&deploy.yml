@@ -65,12 +65,8 @@ jobs:
           host: ${{ secrets.OCI_INSTANCE_IP }}
           username: ${{ secrets.OCI_INSTANCE_USERNAME }}
           key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
-          source: |
-            target/bank-application.jar
-            config/application.properties
-            config/bucket-config
-            config/key_file.pem
-          target: bank/app/runtime
+          source: 'target/bank-application.jar,config/application.properties,config/bucket-config,config/key_file.pem'
+          target: 'bank/app/runtime'
 
       - name: SSH into OCI Instance and Run Application
         uses: appleboy/ssh-action@master
