@@ -20,6 +20,19 @@ jobs:
       - name: Make mvnw Executable
         run: chmod +x mvnw
 
+      - name: Create External Config File
+        run: |
+          mkdir -p config
+          echo "[DEFAULT]" >> config/bucket-config 
+          echo "user=${{ secrets.OCI_USER_OCID }}" >> config/bucket-config
+          echo "fingerprint=${{ secrets.OCI_API_KEY_FINGERPRINT }}" >> config/bucket-config
+          echo "tenancy=${{ secrets.OCI_TENANCY_OCID }}" >> config/bucket-config
+          echo "region=${{ secrets.OCI_REGION_ID }}" >> config/bucket-config
+          echo "key_file=./config/key_file.pem" >> config/bucket-config
+          echo "storage.bucket.namespace=${{ secrets.OCI_BUCKET_NAMESPACE }}" >> config/application.properties
+          echo "storage.bucket.name=${{ secrets.OCI_BUCKET_NAME }}" >> config/application.properties
+          echo "${{ secrets.API_PRIVATE_KEY }}" >> config/key_file.pem
+          
       - name: Build Spring Project
         run: ./mvnw clean install
       
@@ -41,6 +54,7 @@ jobs:
           script: |
             rm -rf bank/app/runtime/target
             rm bank/app/runtime/bank-application.jar
+            rm -rf bank/app/runtime/config
          
       - name: Copy JAR to OCI Instance
         uses: appleboy/scp-action@master
@@ -48,7 +62,11 @@ jobs:
           host: ${{ secrets.OCI_INSTANCE_IP }}
           username: ${{ secrets.OCI_INSTANCE_USERNAME }}
           key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
-          source: 'target/bank-application.jar'
+          source: |
+            target/bank-application.jar
+            config/application.properties
+            config/bucket-config
+            config/key_file.pem
           target: 'bank/app/runtime'
 
       - name: SSH into OCI Instance and Run Application
@@ -59,4 +77,5 @@ jobs:
           key: ${{ secrets.OCI_INSTANCE_PRIVATE_KEY }}
           script: |
             mv bank/app/runtime/target/bank-application.jar bank/app/runtime/bank-application.jar
+            mv bank/app/runtim/target/config bank/app/runtime/config
             sudo systemctl start bank-application

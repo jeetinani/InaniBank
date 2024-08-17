@@ -13,4 +13,6 @@ import com.inani.bank.domain.AccountTransaction;
 public interface AccountTransactionRepository extends JpaRepository<AccountTransaction,Long>{
     
     List<AccountTransaction> findByAccount(Account account);
+
+    List<AccountTransaction> findTop6ByAccount(Account account);
 }

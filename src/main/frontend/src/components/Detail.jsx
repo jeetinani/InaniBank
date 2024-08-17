@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+
 
 export default function Detail() {
     const params = useParams();
@@ -8,6 +9,7 @@ export default function Detail() {
         account: null,
         transactions: []
     })
+    const [outcome, setOutcome] = useState("");
 
     useEffect(() => {
         let token = window.sessionStorage.getItem("user-info");
@@ -21,7 +23,7 @@ export default function Detail() {
             Promise.all([
                 axios.get(`/api/accounts/${params.acno}`, options),
                 axios.get(`/api/accounts/${params.acno}/transactions`, options)
-            ]).then(([accResponse, transactionsResponse])=> {
+            ]).then(([accResponse, transactionsResponse]) => {
                 setAccountDetails({
                     account: accResponse.data,
                     transactions: transactionsResponse.data
@@ -29,6 +31,28 @@ export default function Detail() {
             });
         }
     }, [params])
+
+    const getStatement = () => {
+        let token = window.sessionStorage.getItem("user-info");
+        let options = {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        };
+        axios.get(`/api/statement/${params.acno}`, options)
+            .then(response => {
+                console.log("Get request successful:" + response.data);
+                setOutcome(
+                    <Link to={response.data} /* target="_blank" rel="noopener noreferrer" */>
+                        AccountStatement_{params.acno}
+                    </Link>
+                );
+            })
+            .catch(error => {
+                console.log("Get request failed:", error);
+                setOutcome("Failed");
+            });
+    };
 
 
     return (
@@ -57,6 +81,10 @@ export default function Detail() {
                         <dd>{accountDetails.account.email}</dd>
                     </dl>
                 }
+            </div>
+            <div>
+                <button onClick={getStatement}>Generate Statement</button>
+                {outcome}
             </div>
             <div>
                 <h3>Transactions</h3>
