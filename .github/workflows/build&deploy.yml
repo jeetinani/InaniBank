@@ -35,6 +35,9 @@ jobs:
           
       - name: Build Spring Project
         run: ./mvnw clean install
+
+      - name: List Files for Debugging
+        run: ls -la target config
       
       - name: SSH into OCI Instance and Stop old Application
         uses: appleboy/ssh-action@master
@@ -67,7 +70,7 @@ jobs:
             config/application.properties
             config/bucket-config
             config/key_file.pem
-          target: 'bank/app/runtime'
+          target: bank/app/runtime
 
       - name: SSH into OCI Instance and Run Application
         uses: appleboy/ssh-action@master
