@@ -74,7 +74,7 @@ export default function Home() {
                     }
                 )
         }
-    }, [context,token]);
+    }, [context, token]);
 
     return (
         <>

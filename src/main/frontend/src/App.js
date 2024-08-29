@@ -9,6 +9,7 @@ import Layout from "./components/Layout";
 import LoggingPage from './components/LoggingPage';
 import Logout from "./components/Logout";
 import { useState, useEffect } from 'react';
+import links from "./links.json";
 
 function App() {
 
@@ -17,6 +18,8 @@ function App() {
   let token = window.sessionStorage.getItem("user-info");
   useEffect(() => {
     console.log(`in useEffect of app.js`)
+    console.log('host is ' + links.host);
+    axios.defaults.baseURL = `http://${links.host}`;
     if (token) {
       let options = {
         headers: {
