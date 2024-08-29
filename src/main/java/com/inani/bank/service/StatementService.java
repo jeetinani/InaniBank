@@ -76,6 +76,8 @@ public class StatementService {
 
     PutObjectResponse putObjectResponse = objectStorageClient.putObject(putObjectRequest);
 
+    objectStorageClient.close();
+
     // LOGGER.info("put object request done");
 
     // Generate the file URL

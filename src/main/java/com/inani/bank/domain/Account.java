@@ -35,7 +35,7 @@ public class Account {
     @Column
     private String accountHolder;
 
-    @Column(columnDefinition = "number(19,2) default 0.0")
+    @Column(columnDefinition = "decimal(19,2) default 0.00")
     private BigDecimal balance;
 
     @Column
