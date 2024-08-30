@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { saveAs } from "file-saver";
+
 
 
 export default function Detail() {
@@ -42,15 +44,53 @@ export default function Detail() {
         axios.get(`/api/statement/${params.acno}`, options)
             .then(response => {
                 console.log("Get request successful:" + response.data);
-                setOutcome(
-                    <Link to={response.data} /* target="_blank" rel="noopener noreferrer" */>
-                        AccountStatement_{params.acno}
-                    </Link>
-                );
+                const url = response.data;
+                if (url.startsWith("https://objectstorage")) {
+                    // If the URL is pointing to an external storage, open it in a new tab
+                    // window.open(url, "_blank");
+                    setOutcome(
+                        <a href={url} target="_blank" rel="noopener noreferrer" >
+                            AccountStatement_{params.acno}
+                        </a>
+                    );
+                } else {
+                    // Otherwise, download the file directly from the backend
+                    // Set the outcome to a link that triggers a download
+                    setOutcome(
+                        <a href="#" onClick={(e) => downloadFile(e, url, options)}>
+                            AccountStatement_{params.acno}
+                        </a>
+                    );
+                }
             })
             .catch(error => {
                 console.log("Get request failed:", error);
-                setOutcome("Failed");
+                setOutcome("Failed to generate statement");
+            });
+    };
+
+    const downloadFile = (e, url, options) => {
+        e.preventDefault(); // Prevent the default anchor behavior
+        axios.get(url, {
+            headers: options.headers,
+            responseType: 'blob' // Important to handle the response as a file
+        })
+            .then(response => {
+                const contentDisposition = response.headers['content-disposition'];
+                let filename = `AccountStatement_${params.acno}.csv`;
+
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+                    if (filenameMatch && filenameMatch.length === 2) {
+                        filename = filenameMatch[1];
+                    }
+                }
+
+                saveAs(response.data, filename);
+            })
+            .catch(error => {
+                console.log("File download failed:", error);
+                setOutcome("Failed to download the file.");
             });
     };
 
