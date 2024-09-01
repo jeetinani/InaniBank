@@ -1,12 +1,18 @@
 package com.inani.bank.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inani.bank.domain.User;
@@ -24,6 +30,8 @@ public class AuthenticationController {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    private static Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 
     public AuthenticationController(UserRepository userRepository, PasswordEncoder passwordEncoder,
             JwtService jwtService, AuthenticationManager authenticationManager) {
@@ -59,5 +67,11 @@ public class AuthenticationController {
                         loginRequest.getPassword()));
 
         return userRepository.findByUsername(loginRequest.getUsername()).get();
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public void badCredentials(BadCredentialsException e){
+        LOGGER.error(e.getMessage());
     }
 }

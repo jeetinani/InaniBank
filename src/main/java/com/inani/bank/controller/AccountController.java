@@ -72,11 +72,11 @@ public class AccountController {
         throw new Exception("account number missing");
     }
 
-    @ExceptionHandler(value = Exception.class)
+    /* @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void error(Exception e) {
         LOGGER.error(e.getMessage(), e);
-    }
+    } */
 
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
