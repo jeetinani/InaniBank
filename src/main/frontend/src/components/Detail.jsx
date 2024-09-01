@@ -50,16 +50,19 @@ export default function Detail() {
                     // window.open(url, "_blank");
                     setOutcome(
                         <a href={url} target="_blank" rel="noopener noreferrer" >
-                            AccountStatement_{params.acno}
+                            Open AccountStatement_{params.acno}
                         </a>
                     );
                 } else {
                     // Otherwise, download the file directly from the backend
                     // Set the outcome to a link that triggers a download
                     setOutcome(
-                        <a href="#" onClick={(e) => downloadFile(e, url, options)}>
+                        /* <a href="#" onClick={(e) => downloadFile(e, url, options)}>
                             AccountStatement_{params.acno}
-                        </a>
+                        </a> */
+                        <button onClick={() => downloadFile(null, url, options)} style={{ background: 'none', border: 'none', color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
+                            Download AccountStatement_{params.acno}
+                        </button>
                     );
                 }
             })
