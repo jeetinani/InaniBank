@@ -1,0 +1,45 @@
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bankApp
+      # MYSQL_USER: user
+      # MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bankApp?createDatabaseIfNotExist=true
+      - SPRING_PROFILES_ACTIVE=externalDB
+      # - SPRING_DATASOURCE_USERNAME=user
+      # - SPRING_DATASOURCE_PASSWORD=password
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./src/main/frontend # Update this path to where your Dockerfile and build files are located
+      dockerfile: Dockerfile # Ensure this points to the Dockerfile for serving static files
+    ports:
+      - "3000:80" # Map container port 80 to host port 3000
+    environment:
+      - REACT_APP_BACKEND_URL=http://app:8081  # Ensure this points to your Spring Boot service
+    depends_on:
+      - app
+
+
+volumes:
+  db_data:

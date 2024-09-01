@@ -2,8 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import axios from "axios";
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+
+fetch('/links.json')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Fetched links.json:', data);
+    const host = process.env.REACT_APP_BACKEND_URL || `http://${data.host}`;
+    console.log(`Setting axios baseURL to ${host}`);
+    axios.defaults.baseURL = host;
+  })
+  .catch(error => {
+    console.error('Error fetching links.json:', error);
+  });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

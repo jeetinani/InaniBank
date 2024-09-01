@@ -64,6 +64,11 @@
         	<version>3.41.2.2</version>
  		</dependency>
 		<dependency>
+    		<groupId>mysql</groupId>
+    		<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.28</version>
+    	</dependency>
+		<dependency>
     		<groupId>com.oracle.oci.sdk</groupId>
     		<artifactId>oci-java-sdk-objectstorage</artifactId>
     		<version>3.46.1</version>
@@ -147,12 +152,13 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <phase>prepare-package</phase>
-                        <configuration>
+						<configuration>
                             <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${frontend-src-dir}/build</directory>
-                                </resource>
+                                	<filtering>false</filtering>
+                        		</resource>
                             </resources>
                         </configuration>
                     </execution>

@@ -31,6 +31,9 @@ jobs:
           echo "key_file=./config/key_file.pem" >> config/bucket-config
           echo "storage.bucket.namespace=${{ secrets.OCI_BUCKET_NAMESPACE }}" >> config/application.properties
           echo "storage.bucket.name=${{ secrets.OCI_BUCKET_NAME }}" >> config/application.properties
+          echo "default.user.name=${{ secrets.DEFAULT_USER_NAME }}" >> config/application.properties
+          echo "default.user.password=${{ secrets.DEFAULT_USER_PASSWORD }}" >> config/application.properties
+          echo "object.storage.enabled=true" >> config/application.properties
           echo "${{ secrets.API_PRIVATE_KEY }}" >> config/key_file.pem
           
       - name: Build Spring Project

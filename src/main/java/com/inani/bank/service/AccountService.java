@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.inani.bank.domain.Account;
+import com.inani.bank.dto.AccountDTO;
 import com.inani.bank.repository.AccountRepository;
 
 @Service
@@ -18,5 +19,9 @@ public class AccountService {
 
     public Optional<Account> getAccount(Long accountNumber) {
         return this.accountRepository.findById(accountNumber);
+    }
+
+    public String saveAccount(AccountDTO accountDTO){
+        return  new AccountDTO(accountRepository.save(accountDTO.toDomainObject())).getAccountNumber();
     }
 }
