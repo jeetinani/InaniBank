@@ -29,5 +29,17 @@ services:
       db:
         condition: service_healthy
 
+  frontend:
+    build:
+      context: ./src/main/frontend # Update this path to where your Dockerfile and build files are located
+      dockerfile: Dockerfile # Ensure this points to the Dockerfile for serving static files
+    ports:
+      - "3000:80" # Map container port 80 to host port 3000
+    environment:
+      - REACT_APP_BACKEND_URL=http://app:8081  # Ensure this points to your Spring Boot service
+    depends_on:
+      - app
+
+
 volumes:
   db_data:
