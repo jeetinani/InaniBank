@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -47,7 +47,7 @@ export default function LoggingPage({updateContext}){
             // Handle errors, if any
             //console.log(JSON.stringify(error));
             console.error("Login failed:", error);
-            if(error.response.status===403){
+            if(error.response.status===HttpStatusCode.Unauthorized){
                 setAlert("Invalid Credentials");
             }
         });
