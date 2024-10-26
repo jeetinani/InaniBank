@@ -31,8 +31,8 @@ services:
 
   frontend:
     build:
-      context: ./src/main/frontend # Update this path to where your Dockerfile and build files are located
-      dockerfile: Dockerfile # Ensure this points to the Dockerfile for serving static files
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "3000:80" # Map container port 80 to host port 3000
     environment:
