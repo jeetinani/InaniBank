@@ -10,7 +10,7 @@ fetch('/links.json')
   .then(response => response.json())
   .then(data => {
     console.log('Fetched links.json:', data);
-    const host = process.env.REACT_APP_BACKEND_URL || `http://${data.host}`;
+    const host = process.env.REACT_APP_GATEWAY_URL || process.env.REACT_APP_BACKEND_URL || `http://${data.host}`;
     console.log(`Setting axios baseURL to ${host}`);
     axios.defaults.baseURL = host;
   })

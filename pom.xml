@@ -11,6 +11,7 @@
 	</properties>
     <modules>
         <module>backend</module>
+        <module>gateway</module>
         <!-- Other modules can be added here -->
     </modules>
 </project>
