@@ -4,10 +4,10 @@ COPY . .
 RUN mvn clean package -DskipTests
 FROM openjdk:17
 WORKDIR /app
-COPY --from=build /app/target/bank-application.jar .
+COPY --from=build /app/target/backend.jar .
 #needs to commented if not present
 COPY config ./config
 #needs to commented if not present
 COPY bank.db .
 EXPOSE 8081
-ENTRYPOINT [ "java", "-jar", "bank-application.jar"]
+ENTRYPOINT [ "java", "-jar", "backend.jar"]

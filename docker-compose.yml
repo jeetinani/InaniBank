@@ -16,7 +16,7 @@ services:
       timeout: 5s
       retries: 5
 
-  app:
+  backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -38,7 +38,7 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - SPRING_BACKEND_URL=http://app:8081
+      - SPRING_BACKEND_URL=http://backend:8081
       - SERVER_PORT=8082
 
   frontend:
@@ -48,7 +48,7 @@ services:
     ports:
       - "3000:80" # Map container port 80 to host port 3000
     environment:
-      - REACT_APP_BACKEND_URL=http://app:8081  # Ensure this points to your Spring Boot service
+      - REACT_APP_BACKEND_URL=http://backend:8081  # Ensure this points to your Spring Boot service
       - REACT_APP_GATEWAY_URL=http://gateway:8082  # Ensure this points to your Spring Boot service
     depends_on:
       - app
