@@ -34,10 +34,21 @@ export default function LoggingPage({updateContext}){
     }
  
     const navigate = useNavigate();
-    const submitHandler = (e)=>{
+    const submitHandler = async (e)=>{
         e.preventDefault();
         console.log(JSON.stringify(credentials));
-        axios.post("/auth/login",credentials)
+        try {
+            const resp = await axios.post("/auth/login", credentials);
+            window.sessionStorage.setItem("user-info", resp.data.token);
+            updateContext({ stage: "loggedIn", user: credentials.username });
+            navigate(`/`);
+        } catch (error) {
+            console.error("Login failed:", error);
+            if (error.response && error.response.status === HttpStatusCode.Unauthorized) {
+                setAlert("Invalid Credentials");
+            }
+        }
+        /* axios.post("/auth/login",credentials)
         .then(resp=>{
             window.sessionStorage.setItem("user-info", resp.data.token);
             updateContext({stage:"loggedIn",
@@ -50,7 +61,7 @@ export default function LoggingPage({updateContext}){
             if(error.response.status===HttpStatusCode.Unauthorized){
                 setAlert("Invalid Credentials");
             }
-        });
+        })*/;
     }
 
     return (
