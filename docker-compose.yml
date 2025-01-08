@@ -6,8 +6,8 @@ services:
       MYSQL_DATABASE: bankApp
       # MYSQL_USER: user
       # MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
+    #ports:
+    #  - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -16,29 +16,49 @@ services:
       timeout: 5s
       retries: 5
 
-  app:
-    build: .
-    ports:
-      - "8081:8081"
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    #ports:
+    #  - "8081:8081"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bankApp?createDatabaseIfNotExist=true
       - SPRING_PROFILES_ACTIVE=externalDB
       # - SPRING_DATASOURCE_USERNAME=user
       # - SPRING_DATASOURCE_PASSWORD=password
+    hostname: backend
     depends_on:
       db:
         condition: service_healthy
+    
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_BACKEND_URL=http://backend:8081
+      - SERVER_PORT=8082
+    hostname: gateway
+    depends_on:
+      - backend
 
   frontend:
     build:
-      context: ./src/main/frontend # Update this path to where your Dockerfile and build files are located
-      dockerfile: Dockerfile # Ensure this points to the Dockerfile for serving static files
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_BACKEND_URL=http://backend:8081  # Ensure this points to your Spring Boot service
+        - REACT_APP_GATEWAY_URL=http://localhost:8082  # Ensure this points to your Spring Boot service
     ports:
       - "3000:80" # Map container port 80 to host port 3000
     environment:
-      - REACT_APP_BACKEND_URL=http://app:8081  # Ensure this points to your Spring Boot service
+      - REACT_APP_BACKEND_URL=http://backend:8081  # Ensure this points to your Spring Boot service
+      - REACT_APP_GATEWAY_URL=http://localhost:8082  # Ensure this points to your Spring Boot service
     depends_on:
-      - app
+      - gateway
 
 
 volumes:
