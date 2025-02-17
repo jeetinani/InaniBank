@@ -14,7 +14,7 @@ public class CORSConfiguration {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000")); // Allow React app
+        corsConfiguration.setAllowedOriginPatterns(List.of("*")); // Allow React app
         corsConfiguration.setAllowedMethods(List.of("GET", "POST","OPTIONS")); // Allow all HTTP methods
         corsConfiguration.addAllowedHeader("*"); // Allow all headers
         corsConfiguration.setAllowCredentials(true); // Allow cookies or authentication

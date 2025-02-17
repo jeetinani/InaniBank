@@ -1,0 +1,3 @@
+{
+    "host":"$REACT_APP_GATEWAY_URL"
+}
