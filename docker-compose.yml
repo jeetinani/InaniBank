@@ -3,7 +3,7 @@ services:
     image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: bankApp
+      MYSQL_DATABASE: bankdb
       # MYSQL_USER: user
       # MYSQL_PASSWORD: password
     #ports:
@@ -23,7 +23,7 @@ services:
     #ports:
     #  - "8081:8081"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bankApp?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bankdb?createDatabaseIfNotExist=true
       - SPRING_PROFILES_ACTIVE=externalDB
       # - SPRING_DATASOURCE_USERNAME=user
       # - SPRING_DATASOURCE_PASSWORD=password
@@ -49,9 +49,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      args:
-        - REACT_APP_BACKEND_URL=http://backend:8081  # Ensure this points to your Spring Boot service
-        - REACT_APP_GATEWAY_URL=http://localhost:8082  # Ensure this points to your Spring Boot service
     ports:
       - "3000:80" # Map container port 80 to host port 3000
     environment:
