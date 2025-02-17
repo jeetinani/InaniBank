@@ -51,6 +51,22 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332' # actions/checkout@v4
 
+      - name: Create External Config File
+        run: |
+          mkdir -p config
+          echo "[DEFAULT]" >> config/bucket-config 
+          echo "user=${{ secrets.OCI_USER_OCID }}" >> config/bucket-config
+          echo "fingerprint=${{ secrets.OCI_API_KEY_FINGERPRINT }}" >> config/bucket-config
+          echo "tenancy=${{ secrets.OCI_TENANCY_OCID }}" >> config/bucket-config
+          echo "region=${{ secrets.OCI_REGION_ID }}" >> config/bucket-config
+          echo "key_file=./config/key_file.pem" >> config/bucket-config
+          echo "storage.bucket.namespace=${{ secrets.OCI_BUCKET_NAMESPACE }}" >> config/application.properties
+          echo "storage.bucket.name=${{ secrets.OCI_BUCKET_NAME }}" >> config/application.properties
+          echo "default.user.name=${{ secrets.DEFAULT_USER_NAME }}" >> config/application.properties
+          echo "default.user.password=${{ secrets.DEFAULT_USER_PASSWORD }}" >> config/application.properties
+          echo "object.storage.enabled=true" >> config/application.properties
+          echo "${{ secrets.API_PRIVATE_KEY }}" >> config/key_file.pem
+      
       # Configure Workload Identity Federation and generate an access token.
       #
       # See https://github.com/google-github-actions/auth for more options,
