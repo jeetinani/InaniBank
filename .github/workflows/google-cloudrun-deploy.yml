@@ -3,6 +3,10 @@ name: 'Build and Deploy All'
 on:
   workflow_dispatch:
 
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
 
 jobs:
   # Build Jobs
