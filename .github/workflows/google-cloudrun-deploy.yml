@@ -10,11 +10,17 @@ permissions:
 
 jobs:
   # Build Jobs
-  build-backend:
+  deploy-backend:
     uses: ./.github/workflows/google-cloudrun-backend-docker.yml
+    secrets: inherit
 
-  build-gateway:
+  deploy-gateway:
+    needs: deploy-backend
     uses: ./.github/workflows/google-cloudrun-gateway-docker.yml
+    secrets: inherit
 
-  build-frontend:
+
+  deploy-frontend:
+    needs: deploy-gateway
     uses: ./.github/workflows/google-cloudrun-frontend-docker.yml
+    secrets: inherit
