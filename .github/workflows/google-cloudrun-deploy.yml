@@ -1,0 +1,10 @@
+jobs:
+  # Build Jobs
+  build-backend:
+    uses: ./.github/workflows/google-cloudrun-backend-docker.yml
+
+  build-gateway:
+    uses: ./.github/workflows/google-cloudrun-gateway-docker.yml
+
+  build-frontend:
+    uses: ./.github/workflows/google-cloudrun-frontend-docker.yml
