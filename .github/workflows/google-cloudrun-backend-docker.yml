@@ -1,8 +1,7 @@
 name: 'Build and Deploy Backend to Cloud Run'
 
 on:
-  workflow_dispatch:
-
+  workflow_call:
 env:
   PROJECT_ID: '${{ secrets.gcp_project_id }}' 
   REGION: '${{ secrets.gcp_region }}' 

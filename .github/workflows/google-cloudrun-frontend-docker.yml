@@ -1,7 +1,7 @@
-name: 'Build and Deploy Backend to Cloud Run'
+name: 'Build and Deploy Frontend to Cloud Run'
 
 on:
-  workflow_dispatch:
+  workflow_call:
 
 env:
   PROJECT_ID: '${{ secrets.gcp_project_id }}' 

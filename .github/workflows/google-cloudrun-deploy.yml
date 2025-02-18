@@ -1,3 +1,9 @@
+name: 'Build and Deploy All'
+
+on:
+  workflow_dispatch:
+
+
 jobs:
   # Build Jobs
   build-backend:
