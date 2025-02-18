@@ -8,6 +8,6 @@ COPY --from=build /app/target/backend.jar .
 #needs to commented if not present
 COPY config ./config
 #needs to commented if not present
-COPY bank.db .
+#COPY bank.db .
 EXPOSE 8081
 ENTRYPOINT [ "java", "-jar", "backend.jar"]

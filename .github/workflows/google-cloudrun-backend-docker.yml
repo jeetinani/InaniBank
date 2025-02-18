@@ -1,0 +1,79 @@
+name: 'Build and Deploy Backend to Cloud Run'
+
+on:
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: '${{ secrets.gcp_project_id }}' 
+  REGION: '${{ secrets.gcp_region }}' 
+  SERVICE: '${{ secrets.gcp_backend_service }}' 
+  REPOSITORY: '${{ secrets.gcp_repository }}'
+  SERVICE_ACCOUNT: '${{ secrets.gcp_service_account }}'
+  WORKLOAD_IDENTITY_PROVIDER: '${{ secrets.gcp_wip }}'
+
+jobs:
+  deploy:
+    runs-on: 'ubuntu-latest'
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4' # actions/checkout@v4
+
+      - name: Create External Config File
+        run: |
+          mkdir -p backend/config
+          echo "[DEFAULT]" >> backend/config/bucket-config 
+          echo "user=${{ secrets.OCI_USER_OCID }}" >> backend/config/bucket-config
+          echo "fingerprint=${{ secrets.OCI_API_KEY_FINGERPRINT }}" >> backend/config/bucket-config
+          echo "tenancy=${{ secrets.OCI_TENANCY_OCID }}" >> backend/config/bucket-config
+          echo "region=${{ secrets.OCI_REGION_ID }}" >> backend/config/bucket-config
+          echo "key_file=./config/key_file.pem" >> backend/config/bucket-config
+          echo "storage.bucket.namespace=${{ secrets.OCI_BUCKET_NAMESPACE }}" >> backend/config/application.properties
+          echo "storage.bucket.name=${{ secrets.OCI_BUCKET_NAME }}" >> backend/config/application.properties
+          echo "default.user.name=${{ secrets.DEFAULT_USER_NAME }}" >> backend/config/application.properties
+          echo "default.user.password=${{ secrets.DEFAULT_USER_PASSWORD }}" >> backend/config/application.properties
+          echo "object.storage.enabled=true" >> backend/config/application.properties
+          echo "${{ secrets.API_PRIVATE_KEY }}" >> backend/config/key_file.pem
+      
+      # Configure Workload Identity Federation and generate an access token.
+      #
+      # See https://github.com/google-github-actions/auth for more options,
+      # including authenticating via a JSON credentials file.
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2' # google-github-actions/auth@v2
+        with:
+          service_account: '${{ env.SERVICE_ACCOUNT }}'
+          workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
+
+      # BEGIN - Docker auth
+      # If you already have a container image, you can omit these steps.
+
+      - name: 'Docker Auth'
+        run: |-
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+        # docker login -u oauth2accesstoken -p "$(gcloud auth print-access-token)" https://${{ env.REGION }}-docker.pkg.dev
+
+
+      - name: 'Docker Build and Push Container'
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
+          docker build --tag "${DOCKER_TAG}" -f backend/Dockerfile backend
+          docker push "${DOCKER_TAG}"
+
+
+      - name: 'Deploy to Cloud Run'
+        uses: 'google-github-actions/deploy-cloudrun@v2' # google-github-actions/deploy-cloudrun@v2
+        with:
+          service: '${{ env.SERVICE }}'
+          region: '${{ env.REGION }}'
+          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}'
+          
+          
+      # If required, use the Cloud Run url output in later steps
+      - name: Show Output
+        run: echo ${{ steps.deploy.outputs.url }}
